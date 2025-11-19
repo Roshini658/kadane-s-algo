@@ -1,0 +1,35 @@
+def max_subarray_sum(arr):
+    max_sum = arr[0]
+    current_sum = arr[0]
+    for num in arr[1:]:
+        current_sum = max(num, current_sum + num)
+        max_sum = max(max_sum, current_sum)
+    return max_sum
+def max_subarray_with_indices(arr):
+    max_sum = 0  # Empty subarray allowed
+    current_sum = 0
+    start = end = temp_start = 0
+    found_positive = False
+
+    for i, num in enumerate(arr):
+        if current_sum + num > 0:
+            current_sum += num
+            found_positive = True
+        else:
+            current_sum = 0
+            temp_start = i + 1
+
+        if current_sum > max_sum:
+            max_sum = current_sum
+            start = temp_start
+            end = i + 1  # 'end' is exclusive
+
+    # If max_sum is zero and no positive sum found, return the empty subarray
+    max_subarray = arr[start:end] if found_positive else []
+    return max_sum, max_subarray
+
+# Example usage:
+arr = [-2, -3, 4, -1, -2, 1, 5, -3]
+sum_val, subarray = max_subarray_with_indices(arr)
+print("Maximum sum:", sum_val)
+print("Subarray:", subarray)
